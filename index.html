@@ -84,10 +84,20 @@
 
 .title {
     color: #363636;
-    font-size: 2rem;
+    font-size: 25px;
     font-weight: 600;
     text-align: center;
     line-height: 1.125;
+}
+
+.red-text {
+    color: red;
+    /* font-weight: ; */
+  }
+
+.table {
+    background-color: #f5f5f5;
+    color: #363636;
 }
 
 .columns {
@@ -95,6 +105,31 @@
     margin-right: -0.75rem;
     margin-top: -0.75rem;
     justify-content: center;
+}
+.custom_col {
+  display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+@media (max-width: 700px) {
+  .columns {
+    margin: 0 auto;
+  }
+}
+
+.body-class {
+    color: #4a4a4a;
+    font-size: 1em;
+    font-weight: 400;
+    line-height: 1.5;
+    background-color: #f1f1f1;
+}
+
+
+.table {
+    background-color: #f5f5f5;
+    color: #363636;
 }
 
 
@@ -105,11 +140,12 @@
     }
   </style>
 </head>
-<body>
+<body class="body-class">
   <div class="container">
     <h1 class="title">Filter and Download Excel</h1>
       <div class="columns">
-        <div class="column is-one-third">
+
+        <div class="column is-one-third custom_col" >
           <div class="file has-name is-boxed">
             <label class="file-label">
               <input class="file-input" type="file" id="csvFileInput" accept=".csv,.xlsx">
@@ -118,7 +154,7 @@
                   <i class="fas fa-upload"></i>
                 </span>
                 <span class="file-label">Choose a File..</span>
-                <span class="file-label">CSV or EXCEL..</span>
+                <span class="file-label red-text">*csv or *xlsx</span>
   
               </span>
               <span class="file-name" id="fileName">No file selected</span>
@@ -126,7 +162,7 @@
           </div>
           <div class="buttons-below-upload">
             <button class="button is-primary" id="resetBtn">Reset</button>
-            <button class="button is-primary" id="downloadBtn">Download Filtered Data as XLSX</button>
+            <button class="button is-primary" id="downloadBtn">Export Filtered Data as xlsx</button>
           </div>
         </div>
       </div>
