@@ -64,6 +64,40 @@
       animation: spin 2s linear infinite;
     }
 
+    .file.is-boxed .file-cta {
+    flex-direction: column;
+    height: auto;
+    padding: 1em 8em;
+}
+
+.file-name {
+    border-color: #dbdbdb;
+    border-style: solid;
+    border-width: 1px 1px 1px 0;
+    display: block;
+    max-width: 23em;
+    overflow: hidden;
+    text-align: inherit;
+    text-overflow: ellipsis;
+    margin-bottom: 10px;
+}
+
+.title {
+    color: #363636;
+    font-size: 2rem;
+    font-weight: 600;
+    text-align: center;
+    line-height: 1.125;
+}
+
+.columns {
+    margin-left: -0.75rem;
+    margin-right: -0.75rem;
+    margin-top: -0.75rem;
+    justify-content: center;
+}
+
+
     /* Animation for loader */
     @keyframes spin {
       0% { transform: rotate(0deg); }
@@ -74,28 +108,29 @@
 <body>
   <div class="container">
     <h1 class="title">Filter and Download Excel</h1>
-    <div class="columns">
-      <div class="column is-one-third">
-        <div class="file has-name is-boxed">
-          <label class="file-label">
-            <input class="file-input" type="file" id="csvFileInput" accept=".csv,.xlsx">
-            <span class="file-cta">
-              <span class="file-icon">
-                <i class="fas fa-upload"></i>
+      <div class="columns">
+        <div class="column is-one-third">
+          <div class="file has-name is-boxed">
+            <label class="file-label">
+              <input class="file-input" type="file" id="csvFileInput" accept=".csv,.xlsx">
+              <span class="file-cta">
+                <span class="file-icon">
+                  <i class="fas fa-upload"></i>
+                </span>
+                <span class="file-label">Choose a File..</span>
+                <span class="file-label">CSV or EXCEL..</span>
+  
               </span>
-              <span class="file-label">Choose a File..</span>
-              <span class="file-label">CSV or EXCEL..</span>
-
-            </span>
-            <span class="file-name" id="fileName">No file selected</span>
-          </label>
-        </div>
-        <div class="buttons-below-upload">
-          <button class="button is-primary" id="resetBtn">Reset</button>
-          <button class="button is-primary" id="downloadBtn">Download Filtered Data as XLSX</button>
+              <span class="file-name" id="fileName">No file selected</span>
+            </label>
+          </div>
+          <div class="buttons-below-upload">
+            <button class="button is-primary" id="resetBtn">Reset</button>
+            <button class="button is-primary" id="downloadBtn">Download Filtered Data as XLSX</button>
+          </div>
         </div>
       </div>
-    </div>
+
     <div id="filtersContainer" style="display: none;"></div>
     <div class="table-container">
       <div class="custom-loader-container" id="tableLoader">
@@ -171,6 +206,7 @@
       }
 
       function processDataCsv(csvContent) {
+        showLoader(tableLoader);
         const lines = csvContent.split('\n');
         headers = lines[0].split(',');
 
@@ -181,6 +217,7 @@
       }
 
       function processDataXlsx(xlsxContent) {
+        showLoader(tableLoader);
         const workbook = XLSX.read(xlsxContent, { type: 'array' });
         const sheetName = workbook.SheetNames[0];
         const worksheet = workbook.Sheets[sheetName];
@@ -194,6 +231,7 @@
       }
 
       function renderTable() {
+        showLoader(tableLoader);
         const startIdx = (currentPage - 1) * rowsPerPage;
         const endIdx = startIdx + rowsPerPage;
         const table = document.createElement('table');
@@ -268,6 +306,7 @@
       }
 
       function renderPagination() {
+        showLoader(paginationLoader);
         const totalPages = Math.ceil(data.length / rowsPerPage);
         const paginationList = document.createElement('ul');
         paginationList.classList.add('pagination-list');
@@ -334,3 +373,5 @@
   </script>
 </body>
 </html>
+
+
