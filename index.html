@@ -1,425 +1,468 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Filter and Download File</title>
-  <!-- Bulma CSS -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.3/css/bulma.min.css">
-  <style>
-    /* Custom CSS for filters */
-    #filtersContainer {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-      margin-bottom: 1rem;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Filter and Download File</title>
+    <!-- Bulma CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.3/css/bulma.min.css">
+    <style>
+        /* Custom CSS for filters */
+        #filtersContainer {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
 
-    select {
-      appearance: none;
-      background-color: #f5f5f5;
-      border: 1px solid #dbdbdb;
-      border-radius: 4px;
-      color: #4a4a4a;
-      padding: 0.5rem 1rem;
-      font-size: 1rem;
-      line-height: 1.5;
-      width: 15rem;
-      transition: border-color 0.2s;
-    }
+        select {
+            appearance: none;
+            background-color: #f5f5f5;
+            border: 1px solid #dbdbdb;
+            border-radius: 4px;
+            color: #4a4a4a;
+            padding: 0.5rem 1rem;
+            font-size: 1rem;
+            line-height: 1.5;
+            width: 15rem;
+            transition: border-color 0.2s;
+        }
 
-    select:hover {
-      border-color: #3273dc;
-    }
+        select:hover {
+            border-color: #3273dc;
+        }
 
-    select:focus {
-      border-color: #3273dc;
-      outline: none;
-    }
+        select:focus {
+            border-color: #3273dc;
+            outline: none;
+        }
 
-    /* Optional: Style the reset button */
-    #resetBtn {
-      margin-right: 1rem;
-    }
+        /* Optional: Style the reset button */
+        #resetBtn {
+            margin-right: 1rem;
+        }
 
-    /* Optional: Style the download button */
-    #downloadBtn {
-      margin-bottom: 1rem;
-    }
+        /* Optional: Style the download button */
+        #downloadBtn {
+            margin-bottom: 1rem;
+        }
 
-    /* Custom CSS for loaders */
-    .custom-loader-container {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100px;
-    }
+        /* Custom CSS for loaders */
+        .custom-loader-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100px;
+        }
 
-    .custom-loader {
-      border: 4px solid #f3f3f3;
-      border-top: 4px solid #3498db;
-      border-radius: 50%;
-      width: 32px;
-      height: 32px;
-      animation: spin 2s linear infinite;
-    }
+        .custom-loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            animation: spin 2s linear infinite;
+        }
 
-    .file.is-boxed .file-cta {
-    flex-direction: column;
-    height: auto;
-    padding: 1em 8em;
-}
+        .file.is-boxed .file-cta {
+            flex-direction: column;
+            height: auto;
+            padding: 1em 8em;
+        }
 
-.file-name {
-    border-color: #dbdbdb;
-    border-style: solid;
-    border-width: 1px 1px 1px 0;
-    display: block;
-    max-width: 23em;
-    overflow: hidden;
-    text-align: inherit;
-    text-overflow: ellipsis;
-    margin-bottom: 10px;
-}
+        .file-name {
+            border-color: #dbdbdb;
+            border-style: solid;
+            border-width: 1px 1px 1px 0;
+            display: block;
+            max-width: 23em;
+            overflow: hidden;
+            text-align: inherit;
+            text-overflow: ellipsis;
+            margin-bottom: 10px;
+        }
 
-.title {
-    color: #363636;
-    font-size: 25px;
-    font-weight: 600;
-    text-align: center;
-    line-height: 1.125;
-}
+        .title {
+            color: #363636;
+            font-size: 25px;
+            font-weight: 600;
+            text-align: center;
+            line-height: 1.125;
+        }
 
-.red-text {
-    color: red;
-    /* font-weight: ; */
-  }
+        .red-text {
+            color: red;
+            /* font-weight: ; */
+        }
 
-.table {
-    background-color: #f5f5f5;
-    color: #363636;
-}
+        .table {
+            background-color: #f5f5f5;
+            color: #363636;
+        }
 
-.columns {
-    margin-left: -0.75rem;
-    margin-right: -0.75rem;
-    margin-top: -0.75rem;
-    justify-content: center;
-}
-.custom_col {
-  display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-@media (max-width: 700px) {
-  .columns {
-    margin: 0 auto;
-  }
-}
+        .columns {
+            margin-left: -0.75rem;
+            margin-right: -0.75rem;
+            margin-top: -0.75rem;
+            justify-content: center;
+        }
 
-.body-class {
-    color: #4a4a4a;
-    font-size: 1em;
-    font-weight: 400;
-    line-height: 1.5;
-    background-color: #f1f1f1;
-}
+        .custom_col {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
 
+        @media (max-width: 700px) {
+            .columns {
+                margin: 0 auto;
+            }
+        }
 
-.table {
-    background-color: #f5f5f5;
-    color: #363636;
-}
+        .body-class {
+            color: #4a4a4a;
+            font-size: 1em;
+            font-weight: 400;
+            line-height: 1.5;
+            background-color: #f1f1f1;
+        }
 
 
-    /* Animation for loader */
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-  </style>
+        .table {
+            background-color: #f5f5f5;
+            color: #363636;
+        }
+
+
+        /* Animation for loader */
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
 </head>
+
 <body class="body-class">
-  <div class="container">
-    <h1 class="title">Filter and Download Excel</h1>
-      <div class="columns">
+    <div class="container">
+        <h1 class="title">Filter and Download Excel</h1>
+        <div class="columns">
 
-        <div class="column is-one-third custom_col" >
-          <div class="file has-name is-boxed">
-            <label class="file-label">
-              <input class="file-input" type="file" id="csvFileInput" accept=".csv,.xlsx">
-              <span class="file-cta">
-                <span class="file-icon">
-                  <i class="fas fa-upload"></i>
-                </span>
-                <span class="file-label">Choose a File..</span>
-                <span class="file-label red-text">*csv or *xlsx</span>
-  
-              </span>
-              <span class="file-name" id="fileName">No file selected</span>
-            </label>
-          </div>
-          <div class="buttons-below-upload">
-            <button class="button is-primary" id="resetBtn">Reset</button>
-            <button class="button is-primary" id="downloadBtn">Export Filtered Data as xlsx</button>
-          </div>
+            <div class="column is-one-third custom_col">
+                <div class="file has-name is-boxed">
+                    <label class="file-label">
+                        <input class="file-input" type="file" id="csvFileInput" accept=".csv,.xlsx">
+                        <span class="file-cta">
+                            <span class="file-icon">
+                                <i class="fas fa-upload"></i>
+                            </span>
+                            <span class="file-label">Choose a File..</span>
+                            <span class="file-label red-text">*csv or *xlsx</span>
+
+                        </span>
+                        <span class="file-name" id="fileName">No file selected</span>
+                    </label>
+                </div>
+                <div class="buttons-below-upload">
+                    <button class="button is-primary" id="resetBtn">Reset</button>
+                    <button class="button is-primary" id="downloadBtn">Export Filtered Data as xlsx</button>
+                </div>
+            </div>
         </div>
-      </div>
 
-    <div id="filtersContainer" style="display: none;"></div>
-    <div class="table-container">
-      <div class="custom-loader-container" id="tableLoader">
-        <div class="custom-loader"></div>
-      </div>
-      <div id="tableContainer"></div>
+        <div id="filtersContainer" style="display: none;"></div>
+        <div class="table-container">
+            <div class="custom-loader-container" id="tableLoader">
+                <div class="custom-loader"></div>
+            </div>
+            <div id="tableContainer"></div>
+        </div>
+        <div class="pagination is-centered" role="navigation">
+            <div class="custom-loader-container" id="paginationLoader">
+                <div class="custom-loader"></div>
+            </div>
+            <div id="paginationContainer"></div>
+        </div>
     </div>
-    <div class="pagination is-centered" role="navigation">
-      <div class="custom-loader-container" id="paginationLoader">
-        <div class="custom-loader"></div>
-      </div>
-      <div id="paginationContainer"></div>
-    </div>
-  </div>
 
-  <!-- Font Awesome -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js"></script>
-  <!-- Bulma and JavaScript -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.3/js/bulma.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.3/xlsx.full.min.js"></script>
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      let originalData = [];
-      let data = [];
-      let headers = [];
-      let currentPage = 1;
-      const rowsPerPage = 100; // Adjust the number of rows per page based on your needs
+    <!-- Font Awesome -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js"></script>
+    <!-- Bulma and JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.3/js/bulma.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.3/xlsx.full.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            let originalData = [];
+            let data = [];
+            let headers = [];
+            let currentPage = 1;
+            const rowsPerPage = 100; // Adjust the number of rows per page based on your needs
 
-      const csvFileInput = document.getElementById('csvFileInput');
-      const fileNameDisplay = document.getElementById('fileName');
-      const filtersContainer = document.getElementById('filtersContainer');
-      const tableContainer = document.getElementById('tableContainer');
-      const paginationContainer = document.getElementById('paginationContainer');
-      const resetBtn = document.getElementById('resetBtn');
-      const downloadBtn = document.getElementById('downloadBtn');
-      const tableLoader = document.getElementById('tableLoader');
-      const paginationLoader = document.getElementById('paginationLoader');
-      const appliedFilters = {};
-      hideLoader(tableLoader);
-      hideLoader(paginationLoader);
+            const csvFileInput = document.getElementById('csvFileInput');
+            const fileNameDisplay = document.getElementById('fileName');
+            const filtersContainer = document.getElementById('filtersContainer');
+            const tableContainer = document.getElementById('tableContainer');
+            const paginationContainer = document.getElementById('paginationContainer');
+            const resetBtn = document.getElementById('resetBtn');
+            const downloadBtn = document.getElementById('downloadBtn');
+            const tableLoader = document.getElementById('tableLoader');
+            const paginationLoader = document.getElementById('paginationLoader');
+            const appliedFilters = {};
+            hideLoader(tableLoader);
+            hideLoader(paginationLoader);
 
-      csvFileInput.addEventListener('change', (event) => {
-        const file = event.target.files[0];
-        const reader = new FileReader();
+            csvFileInput.addEventListener('change', (event) => {
+                const file = event.target.files[0];
+                const reader = new FileReader();
 
-        reader.onload = function (e) {
-          const content = e.target.result;
-          const isXlsx = file.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+                reader.onload = function (e) {
+                    const content = e.target.result;
+                    const isXlsx = file.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
 
-         showLoader(tableLoader); // Show loader during file processing
+                    showLoader(tableLoader); // Show loader during file processing
 
-          if (isXlsx) {
-            processDataXlsx(content);
-          } else {
-            const text = new TextDecoder().decode(content);
-            processDataCsv(text);
-          }
+                    if (isXlsx) {
+                        processDataXlsx(content);
+                    } else {
+                        const text = new TextDecoder().decode(content);
+                        processDataCsv(text);
+                    }
 
-          addFilters(); // Add filters after processing the data
-          renderTable();
-          fileNameDisplay.textContent = file.name; // Update the filename display
-        };
+                    addFilters(); // Add filters after processing the data
+                    renderTable();
+                    fileNameDisplay.textContent = file.name; // Update the filename display
+                };
 
-        reader.readAsArrayBuffer(file);
-      });
+                reader.readAsArrayBuffer(file);
+            });
 
-      function showLoader(loader) {
-        loader.style.display = 'flex';
-      }
+            function showLoader(loader) {
+                loader.style.display = 'flex';
+            }
 
-      function hideLoader(loader) {
-        loader.style.display = 'none';
-      }
+            function hideLoader(loader) {
+                loader.style.display = 'none';
+            }
 
-      function processDataCsv(csvContent) {
-        showLoader(tableLoader);
-        const lines = csvContent.split('\n');
-        headers = lines[0].split(',');
+            function processDataCsv(csvContent) {
+                showLoader(tableLoader);
+                const lines = csvContent.split('\n');
+                headers = lines[0].split(',');
 
-        originalData = lines.slice(1).map((line) => line.split(','));
-        data = [...originalData];
+                originalData = lines.slice(1).map((line) => line.split(','));
+                data = [...originalData];
 
-        hideLoader(tableLoader);
-      }
+                hideLoader(tableLoader);
+            }
 
-      function processDataXlsx(xlsxContent) {
-        showLoader(tableLoader);
-        const workbook = XLSX.read(xlsxContent, { type: 'array' });
-        const sheetName = workbook.SheetNames[0];
-        const worksheet = workbook.Sheets[sheetName];
-        const sheetData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+            function processDataXlsx(xlsxContent) {
+                showLoader(tableLoader);
+                const workbook = XLSX.read(xlsxContent, { type: 'array' });
+                const sheetName = workbook.SheetNames[0];
+                const worksheet = workbook.Sheets[sheetName];
+                const sheetData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
 
-        headers = sheetData[0];
-        originalData = sheetData.slice(1);
-        data = [...originalData];
+                headers = sheetData[0];
+                originalData = sheetData.slice(1);
+                data = [...originalData];
 
-        hideLoader(tableLoader);
-      }
+                hideLoader(tableLoader);
+            }
 
-      function renderTable() {
-        showLoader(tableLoader);
-        const startIdx = (currentPage - 1) * rowsPerPage;
-        const endIdx = startIdx + rowsPerPage;
-        const table = document.createElement('table');
-        table.classList.add('table', 'is-fullwidth');
+            function renderTable() {
+                showLoader(tableLoader);
+                const startIdx = (currentPage - 1) * rowsPerPage;
+                const endIdx = startIdx + rowsPerPage;
+                const table = document.createElement('table');
+                table.classList.add('table', 'is-fullwidth');
 
-        // Create table header
-        const headerRow = document.createElement('tr');
-        headers.forEach((header) => {
-          const th = document.createElement('th');
-          th.textContent = header;
-          headerRow.appendChild(th);
+                // Create table header
+                const headerRow = document.createElement('tr');
+                headers.forEach((header) => {
+                    const th = document.createElement('th');
+                    th.textContent = header;
+                    headerRow.appendChild(th);
+                });
+                table.appendChild(headerRow);
+
+                // Create table rows
+                for (let i = startIdx; i < endIdx && i < data.length; i++) {
+                    const row = data[i];
+                    const tr = document.createElement('tr');
+                    row.forEach((value) => {
+                        const td = document.createElement('td');
+                        td.textContent = value;
+                        tr.appendChild(td);
+                    });
+                    table.appendChild(tr);
+                }
+
+                // Clear previous table content and add the new table
+                tableContainer.innerHTML = '';
+                tableContainer.appendChild(table);
+                hideLoader(tableLoader);
+
+                // Update pagination
+                renderPagination();
+            }
+
+            function getUniqueValues(columnIndex) {
+                return [...new Set(data.map((row) => row[columnIndex]))];
+            }
+
+            function addSelectFilter(headerIndex) {
+                const uniqueValues = getUniqueValues(headerIndex);
+                const select = document.createElement('select');
+                select.setAttribute('data-index', headerIndex);
+                select.innerHTML = `
+      <option value="">Select ${headers[headerIndex]}</option>
+      ${uniqueValues.map((value) => `<option value="${value}">${value}</option>`).join('')}
+    `;
+
+                filtersContainer.appendChild(select);
+
+                select.addEventListener('change', () => {
+                    applyFilters(headerIndex);
+                    updateFilterOptions(headerIndex); // Call the update function on filter value change
+                });
+            }
+
+            function applyFilters(headerIndex) {
+                const select = filtersContainer.querySelector(`[data-index="${headerIndex}"]`);
+                const selectedValue = select.value;
+
+                if (!selectedValue) {
+                    delete appliedFilters[headerIndex];
+                } else {
+                    appliedFilters[headerIndex] = selectedValue;
+                }
+
+                data = originalData.filter((row) => {
+                    return Object.entries(appliedFilters).every(([index, filterValue]) => {
+                        // Use numerical comparisons for numeric values
+                        if (!isNaN(parseFloat(filterValue)) && isFinite(filterValue)) {
+                            return parseFloat(row[index]) === parseFloat(filterValue);
+                        } else {
+                            // For non-numeric values, use exact match comparison
+                            return row[index] === filterValue;
+                        }
+                    });
+                });
+
+                currentPage = 1;
+                renderTable();
+            }
+
+            function renderPagination() {
+                showLoader(paginationLoader);
+                const totalPages = Math.ceil(data.length / rowsPerPage);
+                const paginationList = document.createElement('ul');
+                paginationList.classList.add('pagination-list');
+
+                for (let i = 1; i <= totalPages; i++) {
+                    const paginationItem = document.createElement('li');
+                    paginationItem.innerHTML = `<a class="pagination-link">${i}</a>`;
+                    if (i === currentPage) {
+                        paginationItem.firstChild.classList.add('is-current');
+                    }
+
+                    paginationItem.addEventListener('click', () => {
+                        currentPage = i;
+                        renderTable();
+                    });
+
+                    paginationList.appendChild(paginationItem);
+                }
+
+                paginationContainer.innerHTML = '';
+                paginationContainer.appendChild(paginationList);
+                hideLoader(paginationLoader);
+            }
+
+            resetBtn.addEventListener('click', () => {
+                // Clear all data and reload the page
+                location.reload();
+            });
+
+
+
+            function updateFilterOptions(selectedIndex) {
+                // Get the selected filter's value
+                const selectedValue = filtersContainer.querySelector(`[data-index="${selectedIndex}"]`).value;
+
+                // Loop through all the filters (except the selected one)
+                filtersContainer.querySelectorAll('select').forEach((select) => {
+                    const filterIndex = parseInt(select.getAttribute('data-index'), 10);
+
+                    // Skip the selected filter and filters that have already been updated
+                    if (filterIndex === selectedIndex || appliedFilters[filterIndex]) {
+                        return;
+                    }
+
+                    // Get unique values for the other filter based on the selected filter's value
+                    const uniqueValues = getUniqueValues(filterIndex).filter((value) => value !== selectedValue);
+
+                    // Update the options of the other filter
+                    select.innerHTML = `
+        <option value="">Select ${headers[filterIndex]}</option>
+        ${uniqueValues.map((value) => `<option value="${value}">${value}</option>`).join('')}
+      `;
+                });
+            }
+
+            // Function to generate XLSX content from data
+            function generateXLSXContent() {
+                const worksheet = XLSX.utils.aoa_to_sheet([headers, ...data]);
+                const workbook = XLSX.utils.book_new();
+                XLSX.utils.book_append_sheet(workbook, worksheet, 'Filtered Data');
+                const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+                return new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+            }
+
+            // Function to download the filtered data as an XLSX file
+            function downloadXLSX() {
+                const excelContent = generateXLSXContent();
+                const url = window.URL.createObjectURL(excelContent);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'filtered_data.xlsx';
+                a.click();
+                window.URL.revokeObjectURL(url);
+            }
+
+            // Add event listener to the "Download Filtered Data as XLSX" button
+            downloadBtn.addEventListener('click', () => {
+                showLoader(downloadBtn);
+                downloadXLSX();
+                hideLoader(downloadBtn);
+            });
+
+            // Add filters dynamically after the CSV file is loaded
+            function addFilters() {
+                filtersContainer.style.display = 'flex';
+                filtersContainer.innerHTML = '';
+                headers.forEach((header, index) => addSelectFilter(index));
+            }
         });
-        table.appendChild(headerRow);
-
-        // Create table rows
-        for (let i = startIdx; i < endIdx && i < data.length; i++) {
-          const row = data[i];
-          const tr = document.createElement('tr');
-          row.forEach((value) => {
-            const td = document.createElement('td');
-            td.textContent = value;
-            tr.appendChild(td);
-          });
-          table.appendChild(tr);
-        }
-
-        // Clear previous table content and add the new table
-        tableContainer.innerHTML = '';
-        tableContainer.appendChild(table);
-        hideLoader(tableLoader);
-
-        // Update pagination
-        renderPagination();
-      }
-
-      function getUniqueValues(columnIndex) {
-        return [...new Set(data.map((row) => row[columnIndex]))];
-      }
-
-      function addSelectFilter(headerIndex) {
-        const uniqueValues = getUniqueValues(headerIndex);
-        const select = document.createElement('select');
-        select.setAttribute('data-index', headerIndex);
-        select.innerHTML = `
-          <option value="">Select ${headers[headerIndex]}</option>
-          ${uniqueValues.map((value) => `<option value="${value}">${value}</option>`).join('')}
-        `;
-
-        filtersContainer.appendChild(select);
-
-        select.addEventListener('change', () => applyFilters(headerIndex));
-      }
-
-      function applyFilters(headerIndex) {
-        const select = filtersContainer.querySelector(`[data-index="${headerIndex}"]`);
-        const selectedValue = select.value;
-
-        if (!selectedValue) {
-          delete appliedFilters[headerIndex];
-        } else {
-          appliedFilters[headerIndex] = selectedValue;
-        }
-
-        data = originalData.filter((row) => {
-          return Object.entries(appliedFilters).every(([index, filterValue]) => {
-            return row[index] === filterValue;
-          });
-        });
-
-        currentPage = 1;
-        renderTable();
-      }
-
-      function renderPagination() {
-        showLoader(paginationLoader);
-        const totalPages = Math.ceil(data.length / rowsPerPage);
-        const paginationList = document.createElement('ul');
-        paginationList.classList.add('pagination-list');
-
-        for (let i = 1; i <= totalPages; i++) {
-          const paginationItem = document.createElement('li');
-          paginationItem.innerHTML = `<a class="pagination-link">${i}</a>`;
-          if (i === currentPage) {
-            paginationItem.firstChild.classList.add('is-current');
-          }
-
-          paginationItem.addEventListener('click', () => {
-            currentPage = i;
-            renderTable();
-          });
-
-          paginationList.appendChild(paginationItem);
-        }
-
-        paginationContainer.innerHTML = '';
-        paginationContainer.appendChild(paginationList);
-        hideLoader(paginationLoader);
-      }
-
-      resetBtn.addEventListener('click', () => {
-        // Clear all data and reload the page
-        location.reload();
-      });
-
-      // Function to generate XLSX content from data
-      function generateXLSXContent() {
-        const worksheet = XLSX.utils.aoa_to_sheet([headers, ...data]);
-        const workbook = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(workbook, worksheet, 'Filtered Data');
-        const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
-        return new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-      }
-
-      // Function to download the filtered data as an XLSX file
-      function downloadXLSX() {
-        const excelContent = generateXLSXContent();
-        const url = window.URL.createObjectURL(excelContent);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'filtered_data.xlsx';
-        a.click();
-        window.URL.revokeObjectURL(url);
-      }
-
-      // Add event listener to the "Download Filtered Data as XLSX" button
-      downloadBtn.addEventListener('click', () => {
-        showLoader(downloadBtn);
-        downloadXLSX();
-        hideLoader(downloadBtn);
-      });
-
-      // Add filters dynamically after the CSV file is loaded
-      function addFilters() {
-        filtersContainer.style.display = 'flex';
-        filtersContainer.innerHTML = '';
-        headers.forEach((header, index) => addSelectFilter(index));
-      }
-    });
-  </script>
+    </script>
 </body>
 <footer style="background-color: #f0f0f0; padding: 20px;">
-  <div style="text-align: center;">
-    <p style="margin: 0;">
-      Jul 2023 | 
-      <a href="https://retheshgoud.github.io/" style="color: #0066cc; text-decoration: none;" target="_blank" rel="noopener noreferrer">Rethesh goud</a>
-      <span class="emoji technologist">🧑‍💻</span>
-    </p>
-  </div>
+    <div style="text-align: center;">
+        <p style="margin: 0;">
+            Jul 2023 |
+            <a href="https://retheshgoud.github.io/" style="color: #0066cc; text-decoration: none;" target="_blank"
+                rel="noopener noreferrer">Rethesh goud</a>
+            <span class="emoji technologist">🧑‍💻</span>
+        </p>
+    </div>
 </footer>
 
 
 
 </html>
-
-
